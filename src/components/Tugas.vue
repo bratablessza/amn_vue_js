@@ -1,12 +1,16 @@
 <template>
     <div>
         <b-container>
+            <div class="float-start">
+                <router-link to="/Home">
+                    <b-button class="btn btn-sm" variant="success">Back</b-button>
+                </router-link>
+            </div>&nbsp;
             <div class="float-end">
-                <router-link to="/Home"><b-button class="btn btn-sm" variant="success">Back</b-button>
-                </router-link> &nbsp;
                 <b-button class="btn-sm" @click="showCreateModal" variant="primary">Create Item</b-button>
             </div>
         </b-container>
+
         <b-container>
             <b-table :items="data" :fields="fields_table">
                 <template v-slot:cell(no)="row">
@@ -18,6 +22,11 @@
                     <b-button size="sm" @click="deleteItem(row.item)" variant="danger">Delete</b-button>
                 </template>
             </b-table>
+        </b-container>
+        <b-container>
+            <div class="float-end">
+                <p>Total Employee : {{ total_data }}</p>
+            </div>
         </b-container>
 
         <b-modal v-model="createModal" title="Create Item">
@@ -128,7 +137,7 @@ export default {
             }
         },
         createItem() {
-            console.log(this.isAllValidated);
+
             if (this.isAllValidated) {
                 this.data.push({ ...this.newItem });
                 this.newItem = { name: '', age: '', jobDescription: '' };
@@ -145,6 +154,17 @@ export default {
             this.detailItem = { ...item };
             this.detailModal = true;
         }
+    }, watch: {
+        detailItem: function (detail_newItem, detail_oldItem) {
+            console.log('Nilai baru:', detail_newItem);
+            console.log('Nilai lama:', detail_oldItem);
+        }
     },
+    computed: {
+        total_data() {
+            return this.data.length;
+        }
+    }
+
 };
 </script>
